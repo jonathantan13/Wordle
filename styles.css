@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap");
+
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Libre Franklin", sans-serif;
+  background-color: rgb(29, 29, 29);
+}
+
+.game {
+  max-width: 24rem;
+  margin: 5rem auto;
+}
+
+/* Guesses */
+.guesses-container {
+  display: grid;
+  grid-template-columns: 1fr, 1fr, 1fr, 1fr, 1fr 1fr;
+  gap: 5px;
+
+  width: 14rem;
+  margin: 5rem auto;
+  margin-bottom: 15rem;
+}
+
+.row-guesses {
+  display: flex;
+  justify-content: space-between;
+}
+
+.letter {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgb(80, 80, 80);
+}
+
+/* Keyboard */
+.keyboard {
+  display: grid;
+  gap: 6px;
+}
+
+.keyboard-row-1 {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.keyboard-row-2 {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.keyboard-row-3 {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.keyboard button {
+  width: 32px;
+  height: 40px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 6px;
+
+  color: white;
+  background-color: gray;
+
+  border: none;
+  border-radius: 4px;
+}
+
+.keyboard .enter-btn,
+.keyboard .backspace-btn {
+  font-size: 8px;
+  width: 40px;
+}
+
+.keyboard .backspace-btn {
+  font-size: 12px;
+}
