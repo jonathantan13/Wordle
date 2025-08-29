@@ -36,9 +36,15 @@ const updateUI = function () {
 init();
 
 // TODO: Separate the guesses and adding/removing letters
+
+let preventDoubleClick = false;
+
 keyboard.addEventListener('click', (e) => {
   // debugger;
   e.preventDefault();
+
+  if (preventDoubleClick) return;
+  preventDoubleClick = true;
 
   const letterEl = e.target;
   const dataset = letterEl.dataset.letter;
@@ -49,7 +55,8 @@ keyboard.addEventListener('click', (e) => {
 
   // Adding letters
   if (column <= 5 && dataset !== 'backspace' && dataset !== 'enter') {
-    guessColumnEl.append(letter.textContent);
+    if (guessColumnEl.textContent == '')
+      guessColumnEl.append(letterEl.textContent);
     if (column < 5) column++;
   }
 
@@ -58,4 +65,7 @@ keyboard.addEventListener('click', (e) => {
     guessColumnEl.innerHTML = '';
     if (column > 1) column--;
   }
+
+  // Add 100ms cooldown between each click, backspace keeps firing twice for some reason
+  setTimeout(() => (preventDoubleClick = false), 100);
 });
