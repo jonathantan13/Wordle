@@ -73,7 +73,12 @@ const compareGuess = function (wordArr) {
     } else el.classList.add('wrong-letter');
   });
 
-  console.log(wordArr.join('').toLowerCase());
+  console.log(
+    wordArr
+      .map((el) => el.textContent)
+      .join('')
+      .toLowerCase()
+  );
 
   if (
     wordArr
@@ -83,6 +88,8 @@ const compareGuess = function (wordArr) {
   ) {
     header.textContent = `You win! the word was ${word}`;
     activeGame = false;
+
+    return;
   }
 
   if (row < 6) updateRow();
@@ -91,8 +98,6 @@ const compareGuess = function (wordArr) {
     activeGame = false;
   }
 };
-
-const checkGameStatus = function () {};
 
 // const getWord = async function () {
 //   try {
@@ -114,15 +119,16 @@ let preventDoubleClick = false;
 keyboard.addEventListener('click', (e) => {
   e.preventDefault();
 
-  if (!activeGame) return;
-
-  if (preventDoubleClick) return;
-  preventDoubleClick = true;
-
   const letterEl = e.target;
   const letter = letterEl.dataset.letter;
 
-  if (!letterEl.hasAttribute('data-letter')) return;
+  if (
+    !letterEl.hasAttribute('data-letter') ||
+    !activeGame ||
+    preventDoubleClick
+  )
+    return;
+  preventDoubleClick = true;
 
   updateUI(row, column);
 
@@ -145,6 +151,9 @@ keyboard.addEventListener('click', (e) => {
 
   if (letter === 'enter' && rowToArray.every((el) => el.textContent !== '')) {
     // Working on this once I set up a word fetching system
+
+    // TODO: Setup word checker functionality
+
     compareGuess(rowToArray);
   }
 

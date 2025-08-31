@@ -2,10 +2,17 @@
   "name": "wordle",
   "version": "1.0.0",
   "description": "a remake of the popular game wordle",
-  "main": "index.js",
+  "default": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel index.html",
+    "build": "parcel build index.html --dist-dir ./dist"
   },
   "author": "Jonathan Tan",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "check-word": "^1.1.0"
+  },
+  "devDependencies": {
+    "parcel": "^2.15.4"
+  }
 }
