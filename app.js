@@ -2,23 +2,29 @@
 
 const guessesContainer = document.querySelector('.guesses-container');
 const keyboard = document.querySelector('.keyboard');
+const header = document.querySelector('.header');
+const retryButton = document.querySelector('.retry-btn');
 
 const GUESS_ROWS = 6;
 const API_URL = '';
 const tempWords = ['apple', 'watch', 'great', 'blaze', 'drive'];
 
-let row, column, guessRowEl, guessColumnEl;
+let row, column, guessRowEl, guessColumnEl, activeGame;
 
 const init = function () {
+  // Initial values
   row = 1;
   column = 1;
+  activeGame = true;
 
-  let rowsString = '';
+  header.textContent = 'Welcome to wordle!';
 
   // Clear rows
   guessesContainer.innerHTML = '';
 
   // Dynamically generate 6 rows
+  let rowsString = '';
+
   for (let i = 0; i < GUESS_ROWS; i++) {
     rowsString += `
         <div class="row-guesses row-${i + 1}">
@@ -50,16 +56,12 @@ const compareGuess = function (wordArr) {
   const wordToArray = word.split('');
   const remaining = [...wordToArray];
 
-  console.log(remaining);
-
   for (let i = 0; i < word.length; i++) {
     if (wordToArray[i] == wordArr[i].textContent.toLowerCase()) {
       wordArr[i].classList.add('correct-letter');
       remaining[i] = null;
     }
   }
-
-  console.log(remaining);
 
   wordArr.map((el) => {
     const letterLowerCase = el.textContent.toLowerCase();
@@ -71,10 +73,26 @@ const compareGuess = function (wordArr) {
     } else el.classList.add('wrong-letter');
   });
 
-  console.log(remaining);
+  console.log(wordArr.join('').toLowerCase());
 
-  updateRow();
+  if (
+    wordArr
+      .map((el) => el.textContent)
+      .join('')
+      .toLowerCase() === word
+  ) {
+    header.textContent = `You win! the word was ${word}`;
+    activeGame = false;
+  }
+
+  if (row < 6) updateRow();
+  else {
+    header.textContent = `You lost! the word was ${word}`;
+    activeGame = false;
+  }
 };
+
+const checkGameStatus = function () {};
 
 // const getWord = async function () {
 //   try {
@@ -95,6 +113,8 @@ let preventDoubleClick = false;
 
 keyboard.addEventListener('click', (e) => {
   e.preventDefault();
+
+  if (!activeGame) return;
 
   if (preventDoubleClick) return;
   preventDoubleClick = true;
@@ -131,3 +151,5 @@ keyboard.addEventListener('click', (e) => {
   // Adds 100ms cooldown between each click; backspace keeps firing twice for some reason
   setTimeout(() => (preventDoubleClick = false), 100);
 });
+
+retryButton.addEventListener('click', init);
