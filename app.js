@@ -4,16 +4,19 @@ const guessesContainer = document.querySelector('.guesses-container');
 const keyboard = document.querySelector('.keyboard');
 
 const GUESS_ROWS = 6;
-let row;
-let column;
+const API_URL = '';
+const tempWords = ['apple', 'watch', 'great', 'blaze', 'drive'];
 
-let guessRowEl, guessColumnEl;
+let row, column, guessRowEl, guessColumnEl;
 
 const init = function () {
   row = 1;
   column = 1;
 
   let rowsString = '';
+
+  // Clear rows
+  guessesContainer.innerHTML = '';
 
   // Dynamically generate 6 rows
   for (let i = 0; i < GUESS_ROWS; i++) {
@@ -31,7 +34,7 @@ const init = function () {
   guessesContainer.innerHTML = rowsString;
 };
 
-const updateUI = function () {
+const updateUI = function (row, column) {
   guessRowEl = document.querySelector(`.row-${row}`);
   guessColumnEl = guessRowEl.children[column - 1];
 };
@@ -41,20 +44,56 @@ const updateRow = function () {
   column = 1;
 };
 
-const compareGuess = function () {
-  // Pass in both the player's guess and the word
-  // Loop over player's guess array and compare each letter
-  // 1. If the letter isn't in the word, give it the wrong-letter class
-  // 2. If the letter is in the word but in the wrong position, give it the partial-correct class
-  // 3. If the letter is in the word and in the correct position, give it the correct-letter class
+const compareGuess = function (wordArr) {
+  // Temp word
+  let word = 'apple';
+  const wordToArray = word.split('');
+  const remaining = [...wordToArray];
+
+  console.log(remaining);
+
+  for (let i = 0; i < word.length; i++) {
+    if (wordToArray[i] == wordArr[i].textContent.toLowerCase()) {
+      wordArr[i].classList.add('correct-letter');
+      remaining[i] = null;
+    }
+  }
+
+  console.log(remaining);
+
+  wordArr.map((el) => {
+    const letterLowerCase = el.textContent.toLowerCase();
+
+    if (remaining.includes(letterLowerCase)) {
+      el.classList.add('partial-correct');
+      const index = remaining.indexOf(letterLowerCase);
+      remaining[index] = null;
+    } else el.classList.add('wrong-letter');
+  });
+
+  console.log(remaining);
+
+  updateRow();
 };
+
+// const getWord = async function () {
+//   try {
+//     const res = await fetch(`${API_URL}/`);
+//     const data = await res.json();
+
+//     if (!res.ok) throw new Error();
+
+//     return data;
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
 
 init();
 
 let preventDoubleClick = false;
 
 keyboard.addEventListener('click', (e) => {
-  // debugger;
   e.preventDefault();
 
   if (preventDoubleClick) return;
@@ -65,19 +104,20 @@ keyboard.addEventListener('click', (e) => {
 
   if (!letterEl.hasAttribute('data-letter')) return;
 
-  updateUI();
+  updateUI(row, column);
 
   // Adding letters
   if (column <= 5 && letter !== 'backspace' && letter !== 'enter') {
     if (guessColumnEl.textContent == '')
       guessColumnEl.append(letterEl.textContent);
-    if (column < 5) column++;
+    if (column <= 5) column++;
   }
 
   // Removing letters
   if (letter === 'backspace' && column >= 1) {
-    guessColumnEl.innerHTML = '';
     if (column > 1) column--;
+    updateUI(row, column);
+    guessColumnEl.innerHTML = '';
   }
 
   // Compare word and move onto next row
@@ -86,10 +126,8 @@ keyboard.addEventListener('click', (e) => {
   if (letter === 'enter' && rowToArray.every((el) => el.textContent !== '')) {
     // Working on this once I set up a word fetching system
     compareGuess(rowToArray);
-
-    updateRow();
   }
 
-  // Adds 100ms cooldown between each click, backspace keeps firing twice for some reason
+  // Adds 100ms cooldown between each click; backspace keeps firing twice for some reason
   setTimeout(() => (preventDoubleClick = false), 100);
 });
