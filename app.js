@@ -1,4 +1,4 @@
-import words from 'https://esm.sh/an-array-of-english-words';
+import words from 'https://jspm.dev/an-array-of-english-words';
 
 const guessesContainer = document.querySelector('.guesses-container');
 const keyboard = document.querySelector('.keyboard');
