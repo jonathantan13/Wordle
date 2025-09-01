@@ -1,4 +1,4 @@
-import words from 'https://jspm.dev/an-array-of-english-words';
+import words from './words.json' with { type: 'json' };
 
 const guessesContainer = document.querySelector('.guesses-container');
 const keyboard = document.querySelector('.keyboard');
