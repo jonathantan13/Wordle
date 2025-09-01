@@ -7,7 +7,6 @@ const retryButton = document.querySelector('.retry-btn');
 
 const GUESS_ROWS = 6;
 const API_URL = '';
-const tempWords = ['apple', 'watch', 'great', 'blaze', 'drive'];
 
 let row, column, guessRowEl, guessColumnEl, activeGame;
 
@@ -52,7 +51,7 @@ const updateRow = function () {
 
 const compareGuess = function (wordArr) {
   // Temp word
-  let word = 'apple';
+  let word = 'blaze';
   const wordToArray = word.split('');
   const remaining = [...wordToArray];
 
