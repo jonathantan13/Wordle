@@ -10,9 +10,6 @@ const API_URL = '';
 
 let row, column, guessRowEl, guessColumnEl, activeGame;
 
-// const americanEnglish = isWord('american-english');
-// const britishEnglish = isWord('british-english');
-
 const init = function () {
   // Initial values
   row = 1;
@@ -40,6 +37,17 @@ const init = function () {
   }
 
   guessesContainer.innerHTML = rowsString;
+
+  Array.from(Array.from(keyboard.children)).forEach((row) =>
+    Array.from(row.children).forEach((keyEl) => {
+      if (
+        keyEl.dataset.letter === 'enter' ||
+        keyEl.dataset.letter === 'backspace'
+      )
+        return;
+      keyEl.className = '';
+    })
+  );
 };
 
 const updateUI = function (row, column) {
@@ -52,35 +60,57 @@ const updateRow = function () {
   column = 1;
 };
 
+const updateKeyColor = function (letter, status) {
+  const btn = document.querySelector(`[data-letter="${letter}"]`);
+
+  switch (status) {
+    case 'correct':
+      btn.classList.add('correct-letter');
+      break;
+    case 'partial':
+      btn.classList.add('partial-correct');
+      break;
+    case 'wrong':
+      btn.classList.add('wrong-letter');
+      break;
+  }
+};
+
 const compareGuess = function (wordArr) {
   // Temp word
   let word = 'blaze';
   const wordToArray = word.split('');
   const remaining = [...wordToArray];
 
+  // Correct guess: exists and in correct position
   for (let i = 0; i < word.length; i++) {
-    if (wordToArray[i] == wordArr[i].textContent.toLowerCase()) {
+    const letter = wordArr[i].textContent.toLowerCase()
+    
+    if (wordToArray[i] == letter) {
       wordArr[i].classList.add('correct-letter');
       remaining[i] = null;
+
+      updateKeyColor(letter, 'correct');
     }
   }
-
+  
   wordArr.map((el) => {
     const letterLowerCase = el.textContent.toLowerCase();
-
+    
+    // Correct guess: exists
     if (remaining.includes(letterLowerCase)) {
       el.classList.add('partial-correct');
       const index = remaining.indexOf(letterLowerCase);
       remaining[index] = null;
-    } else el.classList.add('wrong-letter');
-  });
 
-  console.log(
-    wordArr
-      .map((el) => el.textContent)
-      .join('')
-      .toLowerCase()
-  );
+      updateKeyColor(letterLowerCase, 'partial');
+    }
+    // Wrong guess: does not exist
+    else {
+      el.classList.add('wrong-letter');
+      updateKeyColor(letterLowerCase, 'wrong');
+    }
+  });
 
   if (
     wordArr

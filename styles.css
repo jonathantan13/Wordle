@@ -121,13 +121,13 @@
 
 /* Guesses */
 .wrong-letter {
-  background-color: rgb(24, 24, 24);
+  background-color: rgb(24, 24, 24) !important;
 }
 
 .partial-correct {
-  background-color: rgb(255, 191, 0);
+  background-color: rgb(255, 191, 0) !important;
 }
 
 .correct-letter {
-  background-color: rgb(10, 196, 0);
+  background-color: rgb(10, 196, 0) !important;
 }
