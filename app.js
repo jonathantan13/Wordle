@@ -1,4 +1,4 @@
-'use strict';
+import words from 'https://esm.sh/an-array-of-english-words';
 
 const guessesContainer = document.querySelector('.guesses-container');
 const keyboard = document.querySelector('.keyboard');
@@ -9,6 +9,9 @@ const GUESS_ROWS = 6;
 const API_URL = '';
 
 let row, column, guessRowEl, guessColumnEl, activeGame;
+
+// const americanEnglish = isWord('american-english');
+// const britishEnglish = isWord('british-english');
 
 const init = function () {
   // Initial values
@@ -147,13 +150,18 @@ keyboard.addEventListener('click', (e) => {
 
   // Compare word and move onto next row
   const rowToArray = Array.from(guessRowEl.children);
+  const rowToWord = rowToArray
+    .map((el) => el.textContent)
+    .join('')
+    .toLowerCase();
 
   if (letter === 'enter' && rowToArray.every((el) => el.textContent !== '')) {
-    // Working on this once I set up a word fetching system
-
-    // TODO: Setup word checker functionality
-
-    compareGuess(rowToArray);
+    // Checks if word exists
+    if (!words.includes(rowToWord))
+      header.textContent = `${
+        rowToWord[0].toUpperCase() + rowToWord.slice(1)
+      } does not exist!`;
+    else compareGuess(rowToArray);
   }
 
   // Adds 100ms cooldown between each click; backspace keeps firing twice for some reason

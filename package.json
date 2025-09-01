@@ -1,7 +1,7 @@
 {
   "name": "wordle",
   "version": "1.0.0",
-  "description": "a remake of the popular game wordle",
+  "description": "A remake of the popular game wordle",
   "default": "index.html",
   "scripts": {
     "start": "parcel index.html",
@@ -10,7 +10,6 @@
   "author": "Jonathan Tan",
   "license": "ISC",
   "dependencies": {
-    "check-word": "^1.1.0",
     "parcel": "^2.15.4"
   }
 }
