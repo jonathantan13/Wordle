@@ -39,10 +39,10 @@
   color: rgb(203, 203, 203);
 }
 
-/* Guesses */
+/* Guesses container */
 .guesses-container {
   display: grid;
-  grid-template-columns: 1fr, 1fr, 1fr, 1fr, 1fr 1fr;
+  grid-template-columns: 1fr, 1fr, 1fr, 1fr, 1fr, 1fr;
   gap: 5px;
 
   width: 14rem;
@@ -72,18 +72,8 @@
   gap: 6px;
 }
 
-.keyboard-row-1 {
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-}
-
-.keyboard-row-2 {
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-}
-
+.keyboard-row-1,
+.keyboard-row-2,
 .keyboard-row-3 {
   display: flex;
   justify-content: center;

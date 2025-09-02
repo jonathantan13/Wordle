@@ -1,4 +1,4 @@
-import words from './5-letter-words.json' with { type: 'json' };
+import words from '../5-letter-words.json' with { type: 'json' };
 
 const guessesContainer = document.querySelector('.guesses-container');
 const keyboard = document.querySelector('.keyboard');
@@ -172,8 +172,9 @@ keyboard.addEventListener('click', (e) => {
     .map((el) => el.textContent)
     .join('')
     .toLowerCase();
+  const checkEmptyColumn = rowToArray.every((el) => el.textContent !== '');
 
-  if (letter === 'enter' && rowToArray.every((el) => el.textContent !== '')) {
+  if (letter === 'enter' && checkEmptyColumn) {
     // Checks if word exists
     if (!words.includes(rowToWord))
       header.textContent = `${
