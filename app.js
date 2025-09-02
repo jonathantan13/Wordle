@@ -1,4 +1,4 @@
-import words from './words.json' with { type: 'json' };
+import words from './5-letter-words.json' with { type: 'json' };
 
 const guessesContainer = document.querySelector('.guesses-container');
 const keyboard = document.querySelector('.keyboard');
@@ -6,15 +6,15 @@ const header = document.querySelector('.header');
 const retryButton = document.querySelector('.retry-btn');
 
 const GUESS_ROWS = 6;
-const API_URL = '';
 
-let row, column, guessRowEl, guessColumnEl, activeGame;
+let row, column, word, guessRowEl, guessColumnEl, activeGame;
 
 const init = function () {
   // Initial values
   row = 1;
   column = 1;
   activeGame = true;
+  word = pickRandomWord();
 
   header.textContent = 'Welcome to wordle!';
 
@@ -38,6 +38,7 @@ const init = function () {
 
   guessesContainer.innerHTML = rowsString;
 
+  // Resets keyboard
   Array.from(Array.from(keyboard.children)).forEach((row) =>
     Array.from(row.children).forEach((keyEl) => {
       if (
@@ -76,27 +77,27 @@ const updateKeyColor = function (letter, status) {
   }
 };
 
+const pickRandomWord = () => words[Math.floor(Math.random() * words.length)];
+
 const compareGuess = function (wordArr) {
   // Temp word
-  let word = 'blaze';
-  const wordToArray = word.split('');
-  const remaining = [...wordToArray];
+  const remaining = word.split('');
 
   // Correct guess: exists and in correct position
   for (let i = 0; i < word.length; i++) {
-    const letter = wordArr[i].textContent.toLowerCase()
-    
-    if (wordToArray[i] == letter) {
+    const letter = wordArr[i].textContent.toLowerCase();
+
+    if (word[i] == letter) {
       wordArr[i].classList.add('correct-letter');
       remaining[i] = null;
 
       updateKeyColor(letter, 'correct');
     }
   }
-  
+
   wordArr.map((el) => {
     const letterLowerCase = el.textContent.toLowerCase();
-    
+
     // Correct guess: exists
     if (remaining.includes(letterLowerCase)) {
       el.classList.add('partial-correct');
@@ -112,12 +113,12 @@ const compareGuess = function (wordArr) {
     }
   });
 
-  if (
-    wordArr
-      .map((el) => el.textContent)
-      .join('')
-      .toLowerCase() === word
-  ) {
+  const wordGuess = wordArr
+    .map((el) => el.textContent)
+    .join('')
+    .toLowerCase();
+
+  if (wordGuess === word) {
     header.textContent = `You win! the word was ${word}`;
     activeGame = false;
 
@@ -130,19 +131,6 @@ const compareGuess = function (wordArr) {
     activeGame = false;
   }
 };
-
-// const getWord = async function () {
-//   try {
-//     const res = await fetch(`${API_URL}/`);
-//     const data = await res.json();
-
-//     if (!res.ok) throw new Error();
-
-//     return data;
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
 
 init();
 
@@ -194,8 +182,22 @@ keyboard.addEventListener('click', (e) => {
     else compareGuess(rowToArray);
   }
 
-  // Adds 100ms cooldown between each click; backspace keeps firing twice for some reason
-  setTimeout(() => (preventDoubleClick = false), 100);
+  // Adds 50ms cooldown between each click - backspace keeps firing twice for some reason
+  setTimeout(() => (preventDoubleClick = false), 50);
 });
 
 retryButton.addEventListener('click', init);
+
+// const fs = require('fs');
+
+// const filterJSON = async function () {
+//   const res = await fs.readFileSync('words.json');
+//   const data = await JSON.parse(res);
+
+//   const addToJson = await data.filter((word) => word.length === 5);
+//   const newJson = await JSON.stringify(addToJson, null, 2);
+
+//   fs.writeFileSync('./5-letter-words.json', newJson);
+// };
+
+// filterJSON();
