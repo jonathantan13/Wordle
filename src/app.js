@@ -95,7 +95,7 @@ const compareGuess = function (wordArr) {
     .toLowerCase();
 
   if (wordGuess === word) {
-    header.textContent = `You win! the word was ${word}`;
+    elements.header.textContent = `You win! the word was ${word}`;
     activeGame = false;
 
     return;
@@ -103,7 +103,7 @@ const compareGuess = function (wordArr) {
 
   if (row < 6) updateRow();
   else {
-    header.textContent = `You lost! the word was ${word}`;
+    elements.header.textContent = `You lost! the word was ${word}`;
     activeGame = false;
   }
 };
