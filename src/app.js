@@ -1,25 +1,24 @@
 import words from '../5-letter-words.json' with { type: 'json' };
 
-const guessesContainer = document.querySelector('.guesses-container');
-const keyboard = document.querySelector('.keyboard');
-const header = document.querySelector('.header');
-const retryButton = document.querySelector('.retry-btn');
+import * as UI from './ui.js';
+import * as helpers from './helpers.js';
+import * as elements from './elements.js';
 
 const GUESS_ROWS = 6;
 
-let row, column, word, guessRowEl, guessColumnEl, activeGame;
+let row, column, word, activeGame;
 
 const init = function () {
   // Initial values
   row = 1;
   column = 1;
   activeGame = true;
-  word = pickRandomWord();
+  word = helpers.pickRandomWord();
 
-  header.textContent = 'Welcome to wordle!';
+  elements.header.textContent = 'Welcome to wordle!';
 
   // Clear rows
-  guessesContainer.innerHTML = '';
+  elements.guessesContainer.innerHTML = '';
 
   // Dynamically generate 6 rows
   let rowsString = '';
@@ -36,10 +35,10 @@ const init = function () {
     `;
   }
 
-  guessesContainer.innerHTML = rowsString;
+  elements.guessesContainer.innerHTML = rowsString;
 
   // Resets keyboard
-  Array.from(Array.from(keyboard.children)).forEach((row) =>
+  Array.from(Array.from(elements.keyboard.children)).forEach((row) =>
     Array.from(row.children).forEach((keyEl) => {
       if (
         keyEl.dataset.letter === 'enter' ||
@@ -51,33 +50,10 @@ const init = function () {
   );
 };
 
-const updateUI = function (row, column) {
-  guessRowEl = document.querySelector(`.row-${row}`);
-  guessColumnEl = guessRowEl.children[column - 1];
-};
-
 const updateRow = function () {
   if (row <= 6) row++;
   column = 1;
 };
-
-const updateKeyColor = function (letter, status) {
-  const btn = document.querySelector(`[data-letter="${letter}"]`);
-
-  switch (status) {
-    case 'correct':
-      btn.classList.add('correct-letter');
-      break;
-    case 'partial':
-      btn.classList.add('partial-correct');
-      break;
-    case 'wrong':
-      btn.classList.add('wrong-letter');
-      break;
-  }
-};
-
-const pickRandomWord = () => words[Math.floor(Math.random() * words.length)];
 
 const compareGuess = function (wordArr) {
   // Temp word
@@ -91,7 +67,7 @@ const compareGuess = function (wordArr) {
       wordArr[i].classList.add('correct-letter');
       remaining[i] = null;
 
-      updateKeyColor(letter, 'correct');
+      UI.updateKeyColor(letter, 'correct');
     }
   }
 
@@ -104,12 +80,12 @@ const compareGuess = function (wordArr) {
       const index = remaining.indexOf(letterLowerCase);
       remaining[index] = null;
 
-      updateKeyColor(letterLowerCase, 'partial');
+      UI.updateKeyColor(letterLowerCase, 'partial');
     }
     // Wrong guess: does not exist
     else {
       el.classList.add('wrong-letter');
-      updateKeyColor(letterLowerCase, 'wrong');
+      UI.updateKeyColor(letterLowerCase, 'wrong');
     }
   });
 
@@ -132,11 +108,9 @@ const compareGuess = function (wordArr) {
   }
 };
 
-init();
-
 let preventDoubleClick = false;
 
-keyboard.addEventListener('click', (e) => {
+elements.keyboard.addEventListener('click', (e) => {
   e.preventDefault();
 
   const letterEl = e.target;
@@ -150,24 +124,24 @@ keyboard.addEventListener('click', (e) => {
     return;
   preventDoubleClick = true;
 
-  updateUI(row, column);
+  UI.updateUI(row, column);
 
   // Adding letters
   if (column <= 5 && letter !== 'backspace' && letter !== 'enter') {
-    if (guessColumnEl.textContent == '')
-      guessColumnEl.append(letterEl.textContent);
+    if (UI.guessColumnEl.textContent == '')
+      UI.guessColumnEl.append(letterEl.textContent);
     if (column <= 5) column++;
   }
 
   // Removing letters
   if (letter === 'backspace' && column >= 1) {
     if (column > 1) column--;
-    updateUI(row, column);
-    guessColumnEl.innerHTML = '';
+    UI.updateUI(row, column);
+    UI.guessColumnEl.innerHTML = '';
   }
 
   // Compare word and move onto next row
-  const rowToArray = Array.from(guessRowEl.children);
+  const rowToArray = Array.from(UI.guessRowEl.children);
   const rowToWord = rowToArray
     .map((el) => el.textContent)
     .join('')
@@ -187,18 +161,6 @@ keyboard.addEventListener('click', (e) => {
   setTimeout(() => (preventDoubleClick = false), 50);
 });
 
-retryButton.addEventListener('click', init);
+elements.retryButton.addEventListener('click', init);
 
-// const fs = require('fs');
-
-// const filterJSON = async function () {
-//   const res = await fs.readFileSync('words.json');
-//   const data = await JSON.parse(res);
-
-//   const addToJson = await data.filter((word) => word.length === 5);
-//   const newJson = await JSON.stringify(addToJson, null, 2);
-
-//   fs.writeFileSync('./5-letter-words.json', newJson);
-// };
-
-// filterJSON();
+init();
