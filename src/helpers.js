@@ -1,4 +1,4 @@
-import words from '../5-letter-words.json' with { type: 'json' };
+import words from '../guess_posibilities.json' with { type: 'json' };
 
 export const pickRandomWord = () =>
   words[Math.floor(Math.random() * words.length)];
