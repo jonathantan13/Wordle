@@ -116,8 +116,44 @@ const compareGuess = function (wordArr) {
   }
 };
 
+const guess = function (input) {
+  UI.updateUI(row, column);
+
+  // Adding letters
+  if (column <= 5 && input !== 'backspace' && input !== 'enter') {
+    if (UI.guessColumnEl.textContent == '')
+      UI.guessColumnEl.append(input.toUpperCase());
+    if (column <= 5) column++;
+  }
+
+  // Removing letters
+  if (input === 'backspace' && column >= 1) {
+    if (column > 1) column--;
+    UI.updateUI(row, column);
+    UI.guessColumnEl.innerHTML = '';
+  }
+
+  // Compare word and move onto next row
+  const rowToArray = Array.from(UI.guessRowEl.children);
+  const rowToWord = rowToArray
+    .map((el) => el.textContent)
+    .join('')
+    .toLowerCase();
+  const checkEmptyColumn = rowToArray.every((el) => el.textContent !== '');
+
+  if (input === 'enter' && checkEmptyColumn) {
+    // Checks if word exists
+    if (!words.includes(rowToWord))
+      elements.header.textContent = `${
+        rowToWord[0].toUpperCase() + rowToWord.slice(1)
+      } does not exist!`;
+    else compareGuess(rowToArray);
+  }
+};
+
 let preventDoubleClick = false;
 
+// Clicking the keyboard on screen
 elements.keyboard.addEventListener('click', (e) => {
   e.preventDefault();
 
@@ -134,41 +170,13 @@ elements.keyboard.addEventListener('click', (e) => {
 
   UI.updateUI(row, column);
 
-  // Adding letters
-  if (column <= 5 && letter !== 'backspace' && letter !== 'enter') {
-    if (UI.guessColumnEl.textContent == '')
-      UI.guessColumnEl.append(letterEl.textContent);
-    if (column <= 5) column++;
-  }
-
-  // Removing letters
-  if (letter === 'backspace' && column >= 1) {
-    if (column > 1) column--;
-    UI.updateUI(row, column);
-    UI.guessColumnEl.innerHTML = '';
-  }
-
-  // Compare word and move onto next row
-  const rowToArray = Array.from(UI.guessRowEl.children);
-  const rowToWord = rowToArray
-    .map((el) => el.textContent)
-    .join('')
-    .toLowerCase();
-  const checkEmptyColumn = rowToArray.every((el) => el.textContent !== '');
-
-  if (letter === 'enter' && checkEmptyColumn) {
-    // Checks if word exists
-    if (!words.includes(rowToWord))
-      elements.header.textContent = `${
-        rowToWord[0].toUpperCase() + rowToWord.slice(1)
-      } does not exist!`;
-    else compareGuess(rowToArray);
-  }
+  guess(letter);
 
   // Adds 50ms cooldown between each click - backspace keeps firing twice for some reason
   setTimeout(() => (preventDoubleClick = false), 50);
 });
 
+// Using your physical keyboard
 document.addEventListener('keydown', (e) => {
   e.preventDefault();
 
@@ -176,38 +184,7 @@ document.addEventListener('keydown', (e) => {
 
   if (!letters.includes(key) || !activeGame) return;
 
-  UI.updateUI(row, column);
-
-  // Adding letters
-  if (column <= 5 && key !== 'backspace' && key !== 'enter') {
-    if (UI.guessColumnEl.textContent == '')
-      UI.guessColumnEl.append(key.toUpperCase());
-    if (column <= 5) column++;
-  }
-
-  // Removing letters
-  if (key === 'backspace' && column >= 1) {
-    if (column > 1) column--;
-    UI.updateUI(row, column);
-    UI.guessColumnEl.innerHTML = '';
-  }
-
-  // Compare word and move onto next row
-  const rowToArray = Array.from(UI.guessRowEl.children);
-  const rowToWord = rowToArray
-    .map((el) => el.textContent)
-    .join('')
-    .toLowerCase();
-  const checkEmptyColumn = rowToArray.every((el) => el.textContent !== '');
-
-  if (key === 'enter' && checkEmptyColumn) {
-    // Checks if word exists
-    if (!words.includes(rowToWord))
-      elements.header.textContent = `${
-        rowToWord[0].toUpperCase() + rowToWord.slice(1)
-      } does not exist!`;
-    else compareGuess(rowToArray);
-  }
+  guess(key);
 });
 
 elements.retryButton.addEventListener('click', init);
