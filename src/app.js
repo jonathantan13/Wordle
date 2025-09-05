@@ -5,6 +5,7 @@ import * as helpers from './helpers.js';
 import * as elements from './elements.js';
 
 const GUESS_ROWS = 6;
+const letters = [];
 
 let row, column, word, activeGame;
 
@@ -40,6 +41,11 @@ const init = function () {
   // Resets keyboard
   Array.from(Array.from(elements.keyboard.children)).forEach((row) =>
     Array.from(row.children).forEach((keyEl) => {
+      // Make an array with all the possible inputs
+      if (!letters.includes(keyEl.dataset.letter))
+        letters.push(keyEl.dataset.letter);
+
+      // Clear all styles on letters besides enter and backspace
       if (
         keyEl.dataset.letter === 'enter' ||
         keyEl.dataset.letter === 'backspace'
@@ -49,6 +55,8 @@ const init = function () {
     })
   );
 };
+
+init();
 
 const updateRow = function () {
   if (row <= 6) row++;
@@ -151,7 +159,7 @@ elements.keyboard.addEventListener('click', (e) => {
   if (letter === 'enter' && checkEmptyColumn) {
     // Checks if word exists
     if (!words.includes(rowToWord))
-      header.textContent = `${
+      elements.header.textContent = `${
         rowToWord[0].toUpperCase() + rowToWord.slice(1)
       } does not exist!`;
     else compareGuess(rowToArray);
@@ -161,6 +169,46 @@ elements.keyboard.addEventListener('click', (e) => {
   setTimeout(() => (preventDoubleClick = false), 50);
 });
 
-elements.retryButton.addEventListener('click', init);
+document.addEventListener('keydown', (e) => {
+  e.preventDefault();
 
-init();
+  const key = e.key.toLowerCase();
+
+  if (!letters.includes(key) || !activeGame) return;
+
+  UI.updateUI(row, column);
+
+  // Adding letters
+  if (column <= 5 && key !== 'backspace' && key !== 'enter') {
+    if (UI.guessColumnEl.textContent == '')
+      UI.guessColumnEl.append(key.toUpperCase());
+    if (column <= 5) column++;
+  }
+
+  // Removing letters
+  if (key === 'backspace' && column >= 1) {
+    if (column > 1) column--;
+    UI.updateUI(row, column);
+    UI.guessColumnEl.innerHTML = '';
+  }
+
+  // Compare word and move onto next row
+  const rowToArray = Array.from(UI.guessRowEl.children);
+  const rowToWord = rowToArray
+    .map((el) => el.textContent)
+    .join('')
+    .toLowerCase();
+  const checkEmptyColumn = rowToArray.every((el) => el.textContent !== '');
+
+  if (key === 'enter' && checkEmptyColumn) {
+    // Checks if word exists
+    if (!words.includes(rowToWord))
+      elements.header.textContent = `${
+        rowToWord[0].toUpperCase() + rowToWord.slice(1)
+      } does not exist!`;
+    else compareGuess(rowToArray);
+  }
+});
+
+elements.retryButton.addEventListener('click', init);
+console.log(letters);
