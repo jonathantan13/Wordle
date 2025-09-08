@@ -3,6 +3,8 @@ import words from '../guess_posibilities.json' with { type: 'json' };
 export const pickRandomWord = () =>
   words[Math.floor(Math.random() * words.length)];
 
+export const saveState = function () {};
+
 // const fs = require('fs');
 
 // const filterJSON = async function () {

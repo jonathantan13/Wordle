@@ -121,3 +121,9 @@
 .correct-letter {
   background-color: rgb(10, 196, 0) !important;
 }
+
+/* Stats pop-up */
+
+.hidden {
+  display: none;
+}
