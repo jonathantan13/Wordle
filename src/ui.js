@@ -72,7 +72,7 @@ export const updateKeyColor = function (letter, status) {
 export const gameStats = function () {
   const totalGamesPlayed = helpers.state.totalGamesPlayed;
   const gamesWon = helpers.state.wins;
-  const winPercentage = (gamesWon / totalGamesPlayed) * 100;
+  const winPercentage = (gamesWon / totalGamesPlayed) * 100 || 0;
 
   elements.statsGamesPlayed.textContent = totalGamesPlayed.toString();
   elements.statsWinPercentage.textContent = `${winPercentage}%`;
