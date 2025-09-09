@@ -9,6 +9,16 @@
   background-color: rgb(29, 29, 29);
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex-grow: 1;
+}
+
 .game {
   max-width: 24rem;
   margin: 4rem auto;
@@ -63,6 +73,7 @@
   color: white;
   font-weight: bold;
   text-align: center;
+  font-size: 1.2rem;
   line-height: 40px;
 }
 
@@ -129,7 +140,6 @@
 }
 
 .pop-up-overlay {
-  /* display: none; */
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
   z-index: 1000;
@@ -144,14 +154,14 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
   padding: 2rem;
   width: 25rem;
   height: 30rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  /* background: rgba(0, 0, 0, 0.5); */
 
   color: white;
   text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .pop-up-header {
@@ -160,6 +170,7 @@
 
 .pop-up ul {
   list-style: none;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -170,6 +181,7 @@
   position: absolute;
   top: 15px;
   left: 15px;
+
   cursor: pointer;
   font-size: 1.5rem;
   color: white;
@@ -179,12 +191,35 @@
 .play-again-btn {
   padding: 1.5rem;
   margin: 3rem auto;
+
   font: inherit;
   font-size: 2rem;
   font-weight: bold;
+
   color: white;
   cursor: pointer;
+
   border: none;
   background: rgb(10, 196, 0);
   border-radius: 6px;
+}
+
+/* Footer */
+footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 1rem;
+}
+
+.footer-logo {
+  width: 30px;
+  background-color: white;
+  border-radius: 40px;
+}
+
+footer p {
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
 }
