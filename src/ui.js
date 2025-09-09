@@ -1,4 +1,5 @@
 import * as elements from './elements.js';
+import * as helpers from './helpers.js';
 
 const GUESS_ROWS = 6;
 
@@ -6,7 +7,8 @@ export const letters = [];
 export let guessRowEl, guessColumnEl;
 
 export const resetGuessUI = function () {
-  elements.header.textContent = 'WORDLE';
+  // Close modal
+  elements.popupOverlay.classList.add('hidden');
 
   // Clear rows
   elements.guessesContainer.innerHTML = '';
@@ -65,4 +67,13 @@ export const updateKeyColor = function (letter, status) {
       btn.classList.add('wrong-letter');
       break;
   }
+};
+
+export const gameStats = function () {
+  const totalGamesPlayed = helpers.state.totalGamesPlayed;
+  const gamesWon = helpers.state.wins;
+  const winPercentage = (gamesWon / totalGamesPlayed) * 100;
+
+  elements.statsGamesPlayed.textContent = totalGamesPlayed.toString();
+  elements.statsWinPercentage.textContent = `${winPercentage}%`;
 };

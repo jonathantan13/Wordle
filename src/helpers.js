@@ -1,9 +1,23 @@
 import words from '../guess_posibilities.json' with { type: 'json' };
 
+export let state = {
+  wins: 0,
+  totalGamesPlayed: 0,
+};
+
 export const pickRandomWord = () =>
   words[Math.floor(Math.random() * words.length)];
 
-export const saveState = function () {};
+export const saveState = function (status) {
+  if (status === 'win') state.wins += 1;
+  state.totalGamesPlayed += 1;
+
+  localStorage.setItem('stats', JSON.stringify(state));
+};
+
+(function () {
+  state = JSON.parse(localStorage.getItem('stats')) ?? state;
+})();
 
 // const fs = require('fs');
 

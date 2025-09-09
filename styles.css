@@ -187,6 +187,10 @@ header {
   margin: 2rem auto;
 }
 
+.pop-up h3 {
+  margin: 1rem auto;
+}
+
 .pop-up ul {
   list-style: none;
 
@@ -194,6 +198,11 @@ header {
   justify-content: center;
   align-items: center;
   gap: 4rem;
+}
+
+.stats-games-played,
+.stats-win-percentage {
+  font-weight: bold;
 }
 
 .close-popup-btn {

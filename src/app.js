@@ -6,8 +6,6 @@ import * as elements from './elements.js';
 
 let row, column, word, activeGame;
 
-const state = {};
-
 const init = function () {
   // Initial values
   row = 1;
@@ -16,6 +14,9 @@ const init = function () {
   word = helpers.pickRandomWord();
 
   UI.resetGuessUI();
+  UI.gameStats();
+
+  console.log(word);
 };
 
 init();
@@ -23,6 +24,21 @@ init();
 const updateRow = function () {
   if (row <= 6) row++;
   column = 1;
+};
+
+const gameOver = function (status) {
+  helpers.saveState(status);
+  UI.gameStats();
+
+  elements.popupOverlay.classList.remove('hidden');
+  elements.popUpHeader.classList.remove('hidden');
+  elements.retryButton.classList.remove('hidden');
+
+  elements.popUpHeader.textContent = `You ${status === 'win' ? 'win' : 'lost'}! the word was ${word.toUpperCase()}`;
+
+  console.log('hello');
+
+  activeGame = false;
 };
 
 const compareGuess = function (wordArr) {
@@ -65,17 +81,13 @@ const compareGuess = function (wordArr) {
     .toLowerCase();
 
   if (wordGuess === word) {
-    // elements.header.textContent = `You win! the word was ${word}`;
-    activeGame = false;
+    gameOver('win');
 
     return;
   }
 
   if (row < 6) updateRow();
-  else {
-    // elements.header.textContent = `You lost! the word was ${word}`;
-    activeGame = false;
-  }
+  else gameOver('lost');
 };
 
 const guess = function (input) {
@@ -151,9 +163,13 @@ document.addEventListener('keydown', (e) => {
 
 elements.retryButton.addEventListener('click', init);
 
-elements.statsButton.addEventListener('click', () =>
-  elements.popupOverlay.classList.remove('hidden')
-);
+elements.statsButton.addEventListener('click', () => {
+  if (activeGame) {
+    elements.popUpHeader.classList.add('hidden');
+    elements.retryButton.classList.add('hidden');
+  }
+  elements.popupOverlay.classList.remove('hidden');
+});
 
 elements.closePopupButton.addEventListener('click', () =>
   elements.popupOverlay.classList.add('hidden')
