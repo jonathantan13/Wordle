@@ -15,8 +15,6 @@ const init = function () {
 
   UI.resetGuessUI();
   UI.gameStats();
-
-  console.log(word);
 };
 
 init();
@@ -32,6 +30,11 @@ const gameOver = function (status) {
   elements.popUpHeader.textContent = `You ${status === 'win' ? 'win' : 'lost'}! the word was ${word.toUpperCase()}`;
 
   activeGame = false;
+};
+
+export const updateRow = function () {
+  if (row <= 6) row++;
+  column = 1;
 };
 
 const compareGuess = function (wordArr) {
@@ -79,7 +82,7 @@ const compareGuess = function (wordArr) {
     return;
   }
 
-  if (row < 6) UI.updateRow();
+  if (row < 6) updateRow();
   else gameOver('lost');
 };
 

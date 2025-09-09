@@ -48,15 +48,6 @@ export const resetGuessUI = function () {
   );
 };
 
-export const updateRow = function () {
-  if (row <= 6) row++;
-  column = 1;
-};
-
-export const activeRow = function () {
-  console.log(guessRowEl);
-};
-
 export const updateUI = function (row, column) {
   guessRowEl = document.querySelector(`.row-${row}`);
   guessColumnEl = guessRowEl.children[column - 1];
