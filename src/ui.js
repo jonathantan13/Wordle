@@ -48,6 +48,15 @@ export const resetGuessUI = function () {
   );
 };
 
+export const updateRow = function () {
+  if (row <= 6) row++;
+  column = 1;
+};
+
+export const activeRow = function () {
+  console.log(guessRowEl);
+};
+
 export const updateUI = function (row, column) {
   guessRowEl = document.querySelector(`.row-${row}`);
   guessColumnEl = guessRowEl.children[column - 1];
@@ -75,5 +84,5 @@ export const gameStats = function () {
   const winPercentage = (gamesWon / totalGamesPlayed) * 100 || 0;
 
   elements.statsGamesPlayed.textContent = totalGamesPlayed.toString();
-  elements.statsWinPercentage.textContent = `${winPercentage}%`;
+  elements.statsWinPercentage.textContent = `${winPercentage.toFixed(1)}%`;
 };

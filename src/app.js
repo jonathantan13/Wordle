@@ -21,11 +21,6 @@ const init = function () {
 
 init();
 
-const updateRow = function () {
-  if (row <= 6) row++;
-  column = 1;
-};
-
 const gameOver = function (status) {
   helpers.saveState(status);
   UI.gameStats();
@@ -35,8 +30,6 @@ const gameOver = function (status) {
   elements.retryButton.classList.remove('hidden');
 
   elements.popUpHeader.textContent = `You ${status === 'win' ? 'win' : 'lost'}! the word was ${word.toUpperCase()}`;
-
-  console.log('hello');
 
   activeGame = false;
 };
@@ -86,7 +79,7 @@ const compareGuess = function (wordArr) {
     return;
   }
 
-  if (row < 6) updateRow();
+  if (row < 6) UI.updateRow();
   else gameOver('lost');
 };
 
@@ -117,10 +110,8 @@ const guess = function (input) {
 
   if (input === 'enter' && checkEmptyColumn) {
     // Checks if word exists
-    if (!words.includes(rowToWord)) return;
-    // elements.header.textContent = `${
-    //   rowToWord[0].toUpperCase() + rowToWord.slice(1)
-    // } does not exist!`;
+    if (!words.includes(rowToWord))
+      alert('This word does not exist, try something else!');
     else compareGuess(rowToArray);
   }
 };
