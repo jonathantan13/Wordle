@@ -6,7 +6,7 @@ export const letters = [];
 export let guessRowEl, guessColumnEl;
 
 export const resetGuessUI = function () {
-  elements.header.textContent = 'Welcome to wordle!';
+  elements.header.textContent = 'WORDLE';
 
   // Clear rows
   elements.guessesContainer.innerHTML = '';

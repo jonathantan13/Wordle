@@ -65,7 +65,7 @@ const compareGuess = function (wordArr) {
     .toLowerCase();
 
   if (wordGuess === word) {
-    elements.header.textContent = `You win! the word was ${word}`;
+    // elements.header.textContent = `You win! the word was ${word}`;
     activeGame = false;
 
     return;
@@ -73,7 +73,7 @@ const compareGuess = function (wordArr) {
 
   if (row < 6) updateRow();
   else {
-    elements.header.textContent = `You lost! the word was ${word}`;
+    // elements.header.textContent = `You lost! the word was ${word}`;
     activeGame = false;
   }
 };
@@ -105,10 +105,10 @@ const guess = function (input) {
 
   if (input === 'enter' && checkEmptyColumn) {
     // Checks if word exists
-    if (!words.includes(rowToWord))
-      elements.header.textContent = `${
-        rowToWord[0].toUpperCase() + rowToWord.slice(1)
-      } does not exist!`;
+    if (!words.includes(rowToWord)) return;
+    // elements.header.textContent = `${
+    //   rowToWord[0].toUpperCase() + rowToWord.slice(1)
+    // } does not exist!`;
     else compareGuess(rowToArray);
   }
 };
@@ -150,3 +150,11 @@ document.addEventListener('keydown', (e) => {
 });
 
 elements.retryButton.addEventListener('click', init);
+
+elements.statsButton.addEventListener('click', () =>
+  elements.popupOverlay.classList.remove('hidden')
+);
+
+elements.closePopupButton.addEventListener('click', () =>
+  elements.popupOverlay.classList.add('hidden')
+);
