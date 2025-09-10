@@ -155,8 +155,10 @@ document.addEventListener('keydown', (e) => {
   guess(key);
 });
 
+// Play new game button
 elements.retryButton.addEventListener('click', init);
 
+// Stats button in the header
 elements.statsButton.addEventListener('click', () => {
   if (activeGame) {
     elements.popUpHeader.classList.add('hidden');
@@ -165,6 +167,12 @@ elements.statsButton.addEventListener('click', () => {
   elements.popupOverlay.classList.remove('hidden');
 });
 
+// Close stats pop-up button
 elements.closePopupButton.addEventListener('click', () =>
+  elements.popupOverlay.classList.add('hidden')
+);
+
+// Pressing the "ESC" key on your keyboard
+document.addEventListener('keydown', () =>
   elements.popupOverlay.classList.add('hidden')
 );
