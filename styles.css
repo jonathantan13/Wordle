@@ -129,9 +129,21 @@ header {
   border-radius: 4px;
 }
 
+@keyframes keyboardBlink {
+  from {
+    background-color: rgb(160, 160, 160);
+  }
+  to {
+    background-color: gray;
+  }
+}
+
 .keyboard button:hover {
   cursor: pointer;
-  background-color: rgb(160, 160, 160);
+}
+
+.keyboard button:active {
+  animation: keyboardBlink 0.15s forwards;
 }
 
 .keyboard .enter-btn,
