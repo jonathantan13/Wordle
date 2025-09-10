@@ -38,7 +38,6 @@ export const updateRow = function () {
 };
 
 const compareGuess = function (wordArr) {
-  // Temp word
   const remaining = word.split('');
 
   // Correct guess: exists and in correct position
