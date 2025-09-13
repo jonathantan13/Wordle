@@ -4,13 +4,14 @@ import * as UI from './ui.js';
 import * as helpers from './helpers.js';
 import * as elements from './elements.js';
 
-let row, column, word, activeGame;
+let row, column, word, activeGame, popupActive;
 
 const init = function () {
   // Initial values
   row = 1;
   column = 1;
   activeGame = true;
+  popupActive = false;
   word = helpers.pickRandomWord();
 
   UI.resetGuessUI();
@@ -86,6 +87,8 @@ const compareGuess = function (wordArr) {
 };
 
 const guess = function (input) {
+  if (!activeGame) return;
+
   UI.updateUI(row, column);
 
   // Adding letters
@@ -127,12 +130,7 @@ elements.keyboard.addEventListener('click', (e) => {
   const letterEl = e.target;
   const letter = letterEl.dataset.letter;
 
-  if (
-    !letterEl.hasAttribute('data-letter') ||
-    !activeGame ||
-    preventDoubleClick
-  )
-    return;
+  if (!letterEl.hasAttribute('data-letter') || preventDoubleClick) return;
   preventDoubleClick = true;
 
   UI.updateUI(row, column);
@@ -149,7 +147,7 @@ document.addEventListener('keydown', (e) => {
 
   const key = e.key.toLowerCase();
 
-  if (!UI.letters.includes(key) || !activeGame) return;
+  if (!UI.letters.includes(key) || popupActive) return;
 
   guess(key);
 });
@@ -164,14 +162,19 @@ elements.statsButton.addEventListener('click', () => {
     elements.retryButton.classList.add('hidden');
   }
   elements.popupOverlay.classList.remove('hidden');
+  popupActive = true;
 });
 
 // Close stats pop-up button
-elements.closePopupButton.addEventListener('click', () =>
-  elements.popupOverlay.classList.add('hidden')
-);
+elements.closePopupButton.addEventListener('click', () => {
+  elements.popupOverlay.classList.add('hidden');
+  popupActive = false;
+});
 
 // Pressing the "ESC" key on your keyboard
-document.addEventListener('keydown', () =>
-  elements.popupOverlay.classList.add('hidden')
-);
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+
+  elements.popupOverlay.classList.add('hidden');
+  popupActive = false;
+});
