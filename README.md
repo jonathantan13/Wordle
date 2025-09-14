@@ -2,11 +2,11 @@
 
 # WORDLE
 
-I decided to build my own Wordle clone as an ad-free substitute to the apps riddled with ads on the app store. If you'd like to read the rules of the game, you can find them [here.](https://www.nytimes.com/2023/08/01/crosswords/how-to-talk-about-wordle.html)
+I decided to build my own Wordle clone as an ad-free substitute to the ones on the app store riddled with ads. If you'd like to read the rules of the game, you can find them [here.](https://www.nytimes.com/2023/08/01/crosswords/how-to-talk-about-wordle.html)
 
 ## Features
 
 - Features over **2,600** guessable words and **13,000** possible 5-letter inputs.
 - Stores player's statistics in the browser's local storage.
 - Employs mobile-first design
-- Is continuously deployed via netlify
+- Continuously deployed via Netlify
