@@ -2,7 +2,7 @@
 
 # WORDLE
 
-I decided to build my own Wordle clone as an ad-free substitute to the ones on the app store riddled with ads. If you'd like to read the rules of the game, you can find them [here.](https://www.nytimes.com/2023/08/01/crosswords/how-to-talk-about-wordle.html)
+I decided to build my own Wordle clone as an ad-free substitute to the apps riddled with ads. If you'd like to read the rules of the game, you can find them [here.](https://www.nytimes.com/2023/08/01/crosswords/how-to-talk-about-wordle.html)
 
 ## Features
 
