@@ -234,7 +234,7 @@ header {
 .close-popup-btn {
   position: absolute;
   top: 15px;
-  left: 15px;
+  right: 15px;
 
   cursor: pointer;
   font-size: 1.5rem;
